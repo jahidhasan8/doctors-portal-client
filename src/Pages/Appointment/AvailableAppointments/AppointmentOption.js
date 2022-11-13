@@ -11,7 +11,7 @@ const AppointmentOption = ({ appointmentOption,setTreatment }) => {
                 <p>{slots.length} {SVGFEColorMatrixElement.length >1 ? 'Spaces' :'Space'} available</p>
                 <div className="card-actions justify-center">
                    
-                    <label onClick={()=>setTreatment(appointmentOption)} htmlFor="booking-modal" className="btn btn-primary text-white font-semibold">Book Appointment</label>
+                    <label disabled={slots.length===0} onClick={()=>setTreatment(appointmentOption)} htmlFor="booking-modal" className="btn btn-primary text-white font-semibold">Book Appointment</label>
                 </div>
             </div>
         </div>
