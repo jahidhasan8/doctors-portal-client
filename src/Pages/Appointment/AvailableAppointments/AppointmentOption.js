@@ -1,8 +1,7 @@
 import React from 'react';
-import PrimaryButton from '../../../Components/PrimaryButton/PrimaryButton';
 
-const AppointmentOption = ({ appointmentOption }) => {
-    const { name, slots } = appointmentOption
+const AppointmentOption = ({ appointmentOption,setTreatment }) => {
+    const { name, slots} = appointmentOption
 
     return (
         <div className="card shadow-xl text-slate-600">
@@ -11,7 +10,8 @@ const AppointmentOption = ({ appointmentOption }) => {
                 <p>{slots.length >0? slots[0]:'Try another day'}</p>
                 <p>{slots.length} {SVGFEColorMatrixElement.length >1 ? 'Spaces' :'Space'} available</p>
                 <div className="card-actions justify-center">
-                    <PrimaryButton>Book Appointment</PrimaryButton>
+                   
+                    <label onClick={()=>setTreatment(appointmentOption)} htmlFor="booking-modal" className="btn btn-primary text-white font-semibold">Book Appointment</label>
                 </div>
             </div>
         </div>
