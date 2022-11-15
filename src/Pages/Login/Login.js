@@ -9,15 +9,16 @@ const Login = () => {
 
     const { register, formState: { errors }, handleSubmit } = useForm();
 
-    const {logIn,googleLogin}=useContext(AuthContext)
+    const {logIn,googleLogin,resetPassword}=useContext(AuthContext)
     const googleProvider = new GoogleAuthProvider();
-    
+    const [userEmail,setUserEmail]=useState('')
     const navigate=useNavigate()
     const[loginError, setLoginError]=useState('')
     const location=useLocation()
     const from=location.state?.from?.pathname || '/'
 
     const handleLogin = data => {
+        setUserEmail(data.email)
         console.log(data);
         setLoginError('')
         logIn(data.email,data.password)
@@ -43,6 +44,15 @@ const Login = () => {
         })
         .catch(error=>setLoginError(error.message))
     }
+
+    const handleResetPassword=()=>{
+        resetPassword(userEmail)
+        .then(()=>{
+            toast.success('Please check you email for reset password')
+        })
+        .catch(error=>toast.error(error.message))
+    }
+    
     return (
         <div className="h-[600px] flex justify-center items-center text-slate-600">
             <div className='w-96 p-7'>
@@ -54,7 +64,7 @@ const Login = () => {
                         <label className="label">
                             <span className="label-text">Email</span>
                         </label>
-                        <input type="email"  {...register("email", { required: "Email address is required" })} className="input input-bordered w-full max-w-xs" />
+                        <input  type="email"  {...register("email", { required: "Email address is required" })} className="input input-bordered w-full max-w-xs" />
                         {errors.email && <p className='text-red-600'>{errors.email?.message}</p>}
                     </div>
 
@@ -76,6 +86,8 @@ const Login = () => {
                  </div>
                 </form>
                 <p>New to Doctors portal <Link className='text-secondary' to="/signup">Create New Account</Link></p>
+               {/*  <p onClick={handleResetPassword} className='text-warning text-center font-bold'>Forget password?</p> */}
+                <button onClick={handleResetPassword} className='text-warning  font-bold'>Forget password?</button>
                 <div className="divider text-slate-600">OR</div>
                 <button onClick={handleGoogleLogin} className='btn btn-outline w-full btn-primary'>CONTINUE WITH GOOGLE</button>
             </div>
