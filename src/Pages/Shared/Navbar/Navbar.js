@@ -4,6 +4,7 @@ import { AuthContext } from '../../../contexts/AuthProvider';
 
 const Navbar = () => {
     const { user, logOut } = useContext(AuthContext)
+    
     const handleLogOut = () => {
         logOut()
             .then(() => { })
@@ -15,6 +16,7 @@ const Navbar = () => {
         <li><Link to='/about'>About</Link></li>
         <li><Link to='/'>Home</Link></li>
 
+
         {
             user?.uid ?
                 <>
@@ -25,6 +27,7 @@ const Navbar = () => {
                 :
                 <li><Link to='/login'>Login</Link></li>
         }
+       
     </React.Fragment>
     return (
         <div className="navbar  flex justify-between">
