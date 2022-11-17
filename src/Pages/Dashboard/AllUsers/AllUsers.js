@@ -3,7 +3,7 @@ import React from 'react';
 import toast from 'react-hot-toast';
 
 const AllUsers = () => {
-    const { data: users = [],refetch } = useQuery({
+    const { data: users = [], refetch } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
             const res = await fetch('http://localhost:5000/users')
@@ -12,21 +12,21 @@ const AllUsers = () => {
         }
     })
 
-    const handleMakeAdmin=(id)=>{
-        fetch(`http://localhost:5000/users/admin/${id}`,{
-            method:'PUT',
-            headers:{
+    const handleMakeAdmin = (id) => {
+        fetch(`http://localhost:5000/users/admin/${id}`, {
+            method: 'PUT',
+            headers: {
                 authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
         })
-        .then(res=>res.json())
-        .then(data=>{
-            console.log((data));
-            if(data.modifiedCount){
-                toast.success('Make Admin Successful')
-                refetch()
-            }
-        })
+            .then(res => res.json())
+            .then(data => {
+                console.log((data));
+                if (data.modifiedCount) {
+                    toast.success('Make Admin Successful')
+                    refetch()
+                }
+            })
     }
     return (
         <div>
@@ -47,15 +47,15 @@ const AllUsers = () => {
                     <tbody>
 
                         {
-                            users.map((user,i) => <tr key={user._id}>
-                                <th>{i+1}</th>
+                            users.map((user, i) => <tr key={user._id}>
+                                <th>{i + 1}</th>
                                 <td>{user.name}</td>
                                 <td>{user.email}</td>
                                 <td>{
-                                    user?.role !=='admin' &&
-                                    <button onClick={()=>handleMakeAdmin(user._id)} className='btn btn-xs btn-primary'>Make Admin</button>
-                                    
-                                    }</td>
+                                    user?.role !== 'admin' &&
+                                    <button onClick={() => handleMakeAdmin(user._id)} className='btn btn-xs btn-primary'>Make Admin</button>
+
+                                }</td>
                                 <td><button className='btn btn-xs text-red-600 bg-white font-bold'>Delete</button></td>
                             </tr>)
                         }
