@@ -20,7 +20,7 @@ export const router = createBrowserRouter([
     {
         path: '/',
         element: <Main></Main>,
-        errorElement:<DisplayError></DisplayError>,
+        errorElement: <DisplayError></DisplayError>,
         children: [
             {
                 path: '/',
@@ -43,7 +43,7 @@ export const router = createBrowserRouter([
     {
         path: '/dashboard',
         element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
-        errorElement:<DisplayError></DisplayError>,
+        errorElement: <DisplayError></DisplayError>,
         children: [
             {
                 path: '/dashboard',
@@ -63,10 +63,10 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/dashboard/payment/:id',
-                element: <AdminRoute><Payment></Payment></AdminRoute>,
-                loader:({params})=>fetch(`http://localhost:5000/bookings/${params.id}`)
+                element: <Payment></Payment>,
+                loader: ({ params }) => fetch(`https://doctors-portal-server-fawn.vercel.app/bookings/${params.id}`)
             },
-           
+
         ]
     }
 ])

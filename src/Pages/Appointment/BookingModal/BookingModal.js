@@ -3,8 +3,8 @@ import React, { useContext } from 'react';
 import toast from 'react-hot-toast';
 import { AuthContext } from '../../../contexts/AuthProvider';
 
-const BookingModal = ({ treatment, setTreatment, selectedDate,refetch }) => {
-    const { name, slots,price } = treatment
+const BookingModal = ({ treatment, setTreatment, selectedDate, refetch }) => {
+    const { name, slots, price } = treatment
     const { user } = useContext(AuthContext)
     // treatment is appointment option
     const date = format(selectedDate, 'PP')
@@ -33,7 +33,7 @@ const BookingModal = ({ treatment, setTreatment, selectedDate,refetch }) => {
         // and display success toast
 
         console.log(booking);
-        fetch('http://localhost:5000/bookings', {
+        fetch('https://doctors-portal-server-fawn.vercel.app/bookings', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -50,7 +50,7 @@ const BookingModal = ({ treatment, setTreatment, selectedDate,refetch }) => {
                     toast.success('Booking confirmed')
                     refetch()
                 }
-                else{
+                else {
                     toast.error(data.message)
                 }
             })

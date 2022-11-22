@@ -10,16 +10,16 @@ const CheckoutForm = ({ booking }) => {
 
     const stripe = useStripe()
     const elements = useElements()
-    const { price,email,patient,_id } = booking;
+    const { price, email, patient, _id } = booking;
 
     useEffect(() => {
         // Create PaymentIntent as soon as the page loads
-        fetch("http://localhost:5000/create-payment-intent", {
+        fetch("https://doctors-portal-server-fawn.vercel.app/create-payment-intent", {
             method: "POST",
-            headers: { 
+            headers: {
                 "content-type": "application/json",
-                authorization:`bearer ${localStorage.getItem('accessToken')}`
-             },
+                authorization: `bearer ${localStorage.getItem('accessToken')}`
+            },
             body: JSON.stringify({ price }),
         })
             .then((res) => res.json())
@@ -49,58 +49,58 @@ const CheckoutForm = ({ booking }) => {
         else {
             setCardError('')
         }
-        
+
         setSuccess('')
         setProcessing(true)
-        const {paymentIntent, error:confirmError} = await stripe.confirmCardPayment(
+        const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(
             clientSecret,
             {
-              payment_method: {
-                card: card,
-                billing_details: {
-                  name: patient,
-                  email:email
+                payment_method: {
+                    card: card,
+                    billing_details: {
+                        name: patient,
+                        email: email
+                    },
                 },
-              },
             },
-          );
+        );
 
-          if(confirmError){
+        if (confirmError) {
             setCardError(confirmError.message)
             return
-          }
-           
-          if(paymentIntent.status==='succeeded'){
-             
-                
+        }
+
+        if (paymentIntent.status === 'succeeded') {
+
+
             //  store payment info in the database
-            const payment={
-               price,
-               transactionId:paymentIntent.id,
-               email,
-               bookingId:_id
+            const payment = {
+                price,
+                transactionId: paymentIntent.id,
+                email,
+                bookingId: _id
             }
-            fetch('http://localhost:5000/payments',{
-                method:'POST',
-                headers:{
-                    'content-type':'application/json',
-                    authorization:`bearer ${localStorage.getItem('accessToken')}`
+            fetch('https://doctors-portal-server-fawn.vercel.app/payments', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json',
+                    authorization: `bearer ${localStorage.getItem('accessToken')}`
                 },
                 body: JSON.stringify(payment)
             })
-            .then(res=>res.json())
-            .then(data=>{
-                console.log(data);
-                if(data.insertedId){
-                    setSuccess('Congrats! Your payment completed ')
-             setTransactionId(paymentIntent.id)
-                }
-                
-            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.insertedId) {
+                        setSuccess('Congrats! Your payment completed ')
+                        setTransactionId(paymentIntent.id)
+                    }
 
-            }
-            setProcessing(false)
-         
+                })
+
+        }
+        setProcessing(false)
+
 
     }
     return (
